@@ -72,13 +72,13 @@ public class Process extends Model {
 	@Override
 	public void init() {
 
-		serviceTimeProne = new ContDistNormal(this, "ServiceTimeStream", 28.0,
-				32.0, true, false);
+		serviceTimeProne = new ContDistNormal(this, "ServiceTimeStream", 30.0,
+				4.0, true, false);
 		serviceTimeStanding = new ContDistNormal(this, "ServiceTimeStream",
-				22.0, 26.0, true, false);
+				25.0 ,3.0, true, false);
 		runnerArrivalTime = new ContDistUniform(this, "runnerArrivalTime",
-				6.0 * 60, 7.0 * 60, true, false);
-		penaltyTime = new ContDistNormal(this, "penaltyTime", 21.0, 23.0, true,
+				9*60.0, 60.0, true, false);
+		penaltyTime = new ContDistNormal(this, "penaltyTime", 22.0, 2.0, true,
 				false);
 		RunnerQueue = new ProcessQueue<Runner>(this, "Runner Queue", true, true);
 		idleSRQueue = new ProcessQueue<ShootingRange>(this, "idle SR Queue",
