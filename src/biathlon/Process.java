@@ -56,9 +56,11 @@ public class Process extends Model {
 
 	@Override
 	public void doInitialSchedules() {
-		
+		ShotingRangeGenerator sRG=new ShotingRangeGenerator(this, "Shoting range generator", false, NUM_SR);
 		RunnerGenerator runnerGenerator = new RunnerGenerator(this, "Runner generator", false, NUM_CONTENDER);
+		sRG.activate(new TimeSpan(0));
 		runnerGenerator.activate(new TimeSpan(0));
+		
 	}
 
 	@Override
