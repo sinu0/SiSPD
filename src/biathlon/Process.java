@@ -7,17 +7,15 @@ import desmoj.core.dist.*;
 
 public class Process extends Model {
 
-	protected static int NUM_SR = 4;
+	protected final static int NUM_SR = 4;
 
-	protected static int NUM_CONTENDER = 30;
+	protected final static int NUM_CONTENDER = 30;
 
-	private desmoj.core.dist.ContDistUniform runnerArrivalTime;
+	private desmoj.core.dist.ContDistUniform runnerAverageSpeed;
 
 	private desmoj.core.dist.ContDistNormal serviceTimeProne;
 
 	private desmoj.core.dist.ContDistNormal serviceTimeStanding;
-
-	private desmoj.core.dist.ContDistNormal penaltyTime;
 	
 	protected desmoj.core.simulator.ProcessQueue<Runner> penaltyQueue;
 
@@ -58,11 +56,7 @@ public class Process extends Model {
 
 	@Override
 	public void doInitialSchedules() {
-		for (int i = 1; i < NUM_SR; i++) {
-			ShootingRange range = new ShootingRange(this, "Shooting range ",
-					true);
-			range.activate(new TimeSpan(0));
-		}
+		
 		RunnerGenerator runnerGenerator = new RunnerGenerator(this, "Runner generator", false, NUM_CONTENDER);
 		runnerGenerator.activate(new TimeSpan(0));
 	}
@@ -70,14 +64,13 @@ public class Process extends Model {
 	@Override
 	public void init() {
 
-		serviceTimeProne = new ContDistNormal(this, "ServiceTimeStream", 30.0,
+		serviceTimeProne = new ContDistNormal(this, "ServiceTimeStand", 30.0,
 				4.0, true, false);
-		serviceTimeStanding = new ContDistNormal(this, "ServiceTimeStream",
+		serviceTimeStanding = new ContDistNormal(this, "ServiceTimeProne",
 				25.0 ,3.0, true, false);
-		runnerArrivalTime = new ContDistUniform(this, "runnerArrivalTime",
-				9*60.0, 60.0, true, false);
-		penaltyTime = new ContDistNormal(this, "penaltyTime", 22.0, 2.0, true,
-				false);
+		runnerAverageSpeed = new ContDistUniform(this, "runnerAverageSpeed",
+				25.0, 1.0, true, false);
+		
 		RunnerQueue = new ProcessQueue<Runner>(this, "Runner Queue", true, true);
 		idleSRQueue = new ProcessQueue<ShootingRange>(this, "idle SR Queue",
 				true, true);
@@ -85,7 +78,7 @@ public class Process extends Model {
 	}
 
 	public desmoj.core.dist.ContDistUniform getRunnerArrivalTime() {
-		return runnerArrivalTime;
+		return runnerAverageSpeed;
 	}
 
 	public desmoj.core.dist.ContDistNormal getServiceTimeProne() {
@@ -96,8 +89,6 @@ public class Process extends Model {
 		return serviceTimeStanding;
 	}
 
-	public desmoj.core.dist.ContDistNormal getPenaltyTime() {
-		return penaltyTime;
-	}
+
 
 }
