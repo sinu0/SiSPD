@@ -32,16 +32,18 @@ public class Process extends Model {
 	 */
 	public static void main(String[] args) {
 		Process model = new Process(null, "Biathlon simulation", true, true);
-		// null as first parameter because it is the main model and has no
-		// mastermodel
 
-		Experiment exp = new Experiment("Biatholon_simulation!",
-				TimeUnit.MILLISECONDS, TimeUnit.SECONDS, null);
+		Experiment exp = new Experiment("Biatholon_simulation", "output");
+		
 		model.connectToExperiment(exp);
 		exp.setShowProgressBar(true);
 		exp.stop(new TimeInstant(40,TimeUnit.MINUTES));
-		//exp.tracePeriod(, arg1)
-
+		
+		exp.tracePeriod(new TimeInstant(0), new TimeInstant(40,TimeUnit.MINUTES));
+		
+		exp.start();
+		exp.report();
+		exp.finish();
 	}
 
 	public Process(Model owner, String modelName, boolean showInReport,
@@ -51,7 +53,6 @@ public class Process extends Model {
 
 	@Override
 	public String description() {
-
 		return "Symulcaja biathlonu z masowego startu";
 	}
 
@@ -62,11 +63,8 @@ public class Process extends Model {
 					true);
 			range.activate(new TimeSpan(0));
 		}
-		for (int i = 1; i < NUM_CONTENDER; i++) {
-			RunnerGenerator runner = new RunnerGenerator(this, "Runner", true);
-			runner.activate(new TimeSpan(0));
-		}
-
+		RunnerGenerator runnerGenerator = new RunnerGenerator(this, "Runner generator", false, NUM_CONTENDER);
+		runnerGenerator.activate(new TimeSpan(0));
 	}
 
 	@Override
