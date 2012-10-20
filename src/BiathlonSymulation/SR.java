@@ -13,6 +13,9 @@ public class SR extends SimProcess {
 		SRQueue =  new desmoj.core.simulator.ProcessQueue<Runner>(model, "SR_1 Queue", false, false);
 		shotDist = new ContDistUniform(model, "Shot dist.", 0.0, 100.0, false, false);
 		SRDist = new ContDistUniform(model, "SR service dist.", 40.0, 60.0, false, false);
+		
+		shotDist.reset( System.currentTimeMillis());
+		SRDist.reset( System.currentTimeMillis());
 	}
 	
 	public void addRunner(Runner runner) {
@@ -33,8 +36,6 @@ public class SR extends SimProcess {
 				int penalty = 5;
 				for(int i =0;i<5;++i) {
 					double s = shotDist.sample() ;
-					System.out.println("s:"+s);
-					System.out.println("r:"+r.getAccuracy());
 					if(s <= r.getAccuracy()) penalty--;
 				}
 				r.sendMessage("Shooting range ["+ this.getName() +"] good shoots:" + (5-penalty) + "/5");
