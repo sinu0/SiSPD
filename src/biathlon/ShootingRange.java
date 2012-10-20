@@ -5,15 +5,26 @@ import desmoj.core.simulator.SimProcess;
 
 public class ShootingRange extends SimProcess {
 		
-	public ShootingRange(Model arg0, String arg1, boolean arg2) {
-		super(arg0, arg1, arg2);
-		// TODO Auto-generated constructor stub
+	public ShootingRange(Model owner, String arg1, boolean arg2) {
+		super(owner, arg1, arg2);
+		
+		model = (Process) owner;
 	}
 
 	@Override
 	public void lifeCycle() {
-		// TODO Auto-generated method stub
-		
+		while (true) {		
+			if (model.SR_1_Queue.isEmpty()) {
+				passivate();
+			}
+			else {
+				Runner runner = model.SR_1_Queue.first();
+				model.SR_1_Queue.remove(runner);
+				runner.activate();
+			}
+		}
 	}
-
+	
+	// ------------------------------------------------------------------------
+	private Process model;
 }
