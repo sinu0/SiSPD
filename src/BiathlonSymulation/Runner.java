@@ -2,6 +2,8 @@ package BiathlonSymulation;
 
 import java.util.concurrent.TimeUnit;
 
+import desmoj.core.report.TraceFileOut;
+import desmoj.core.report.TraceNote;
 import desmoj.core.simulator.Model;
 import desmoj.core.simulator.SimProcess;
 import desmoj.core.simulator.TimeSpan;
@@ -18,8 +20,13 @@ public class Runner extends SimProcess {
 		this.stage = 0;
 		
 		this.lock = false;
+		traceFile = new TraceFileOut(2, "");
+		this.traceFile.open("output", "Runner_"+this.number);
 		
-		System.out.println("Runner ctor $ Number[" +this.number+ "], Speed[" +this.speed+ "], Acc[" +this.accuracy+ "]");
+		String msg = "Runner number: " +this.number+ "\n</br>Avg speed: " +
+					 Utils.round2(this.speed)+ " m/s\n</br>Avg Accuracy: " +Utils.round2(this.accuracy)+ " %";
+		
+		traceFile.receive(new TraceNote(owner, msg, owner.presentTime(), this, null));
 	}
 	
 	public int getNumber() {
@@ -31,7 +38,7 @@ public class Runner extends SimProcess {
 	}
 	
 	public double getAccuracy() {
-		return this.number;
+		return this.accuracy;
 	}
 	
 	public int getStage() {
@@ -40,6 +47,10 @@ public class Runner extends SimProcess {
 	
 	public void incStage() {
 		stage++;
+	}
+	
+	public void sendMessage(String msg) {
+		traceFile.receive(new TraceNote(this.model, msg, this.model.presentTime(), this, null));
 	}
 
 	@Override
@@ -54,12 +65,12 @@ public class Runner extends SimProcess {
 				lock = true;
 			}
 			else if(hold_time != 0.0) {
-				//System.out.println("Hold_time:" + hold_time);
 				hold(new TimeSpan(hold_time, TimeUnit.SECONDS));
 				hold_time = 0.0;
 				lock = false;
 			}
 		}
+		traceFile.close();
 	}
 	
 	// ------------------------------------------------------------------------
@@ -67,6 +78,8 @@ public class Runner extends SimProcess {
 	private double speed;    // Prêdkoœæ 1-50 (m/s).
 	private double accuracy; // Celnoœæ 0-100 (%).
 	private int stage;
+	
+	private TraceFileOut traceFile;
 	
 	public double hold_time;
 	

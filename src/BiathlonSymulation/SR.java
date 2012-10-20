@@ -29,10 +29,16 @@ public class SR extends SimProcess {
 			}
 			else {
 				Runner r = SRQueue.first();
+				r.sendMessage("Entered Shooting range ["+ this.getName() +"]");
 				int penalty = 5;
 				for(int i =0;i<5;++i) {
-					if(shotDist.sample() < r.getAccuracy()) penalty--;
+					double s = shotDist.sample() ;
+					System.out.println("s:"+s);
+					System.out.println("r:"+r.getAccuracy());
+					if(s <= r.getAccuracy()) penalty--;
 				}
+				r.sendMessage("Shooting range ["+ this.getName() +"] good shoots:" + (5-penalty) + "/5");
+				if(penalty != 0) r.sendMessage("Shooting range ["+ this.getName() +"] penalty:" + penalty + " circuts");
 				r.hold_time = (penalty * ((penaltyDistance)/(r.getSpeed()))) + SRDist.sample();
 				SRQueue.remove(r);
 				r.activate();

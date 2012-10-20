@@ -12,8 +12,8 @@ public class RunnerGenerator extends SimProcess{
 		super(arg0, arg1, arg2);
 		this.quantity = quantity;
 		
-		this.speedDist = new ContDistUniform(arg0, "Runner speed dist.", 8.2, 8.4, false, false);
-		this.accuracyDist = new ContDistUniform(arg0, "Runner accuracy dist.", 90.0, 99.0, false, false);
+		this.speedDist = new ContDistUniform(arg0, "Runner speed dist.", 7.5, 8.0, false, false);
+		this.accuracyDist = new ContDistUniform(arg0, "Runner accuracy dist.", 75.0, 90.0, false, false);
 	}
 
 	@Override

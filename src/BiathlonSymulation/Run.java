@@ -129,9 +129,11 @@ public class Run extends Model {
 				String msg = "Finished run!";
 				
 				if(top_score != null) {
+					runner.sendMessage(msg+ " place:" + (RUNNERS_NUM-ACTIVE_RUNNERS_NUM) + "/30");
 					msg += " +" + Utils.timeInstantFormatter(TimeOperations.diff(this.presentTime(), top_score));
 				}
 				else {
+					runner.sendMessage(msg+ " place:" + (RUNNERS_NUM-ACTIVE_RUNNERS_NUM) + "/30");
 					top_score = this.presentTime();
 					msg += " "  +Utils.timeInstantFormatter(top_score);
 				}
