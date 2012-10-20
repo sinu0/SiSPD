@@ -20,9 +20,7 @@ public class Run extends Model {
 	
 	
 	public void QueueRunner(Runner runner) {
-		//System.out.println("Runner:" + runner.getNumber() + " entered stage:" + runner.getStage());
-		
-		
+				
 		switch(runner.getStage()) {
 			case 0 : {
 				ACTIVE_RUNNERS_NUM++;
@@ -39,6 +37,16 @@ public class Run extends Model {
 			}
 			
 			case 2 : {
+				String msg = "Passed first checkpoint!";		
+				if(top_score_SR_1 != null) {
+					msg += " +" + Utils.timeInstantFormatter(TimeOperations.diff(this.presentTime(), top_score_SR_1));
+				}
+				else {
+					top_score_SR_1 = this.presentTime();
+					msg += " "  +Utils.timeInstantFormatter(top_score_SR_1);
+				}	
+				after_SR_1.receive(new TraceNote(this, msg, this.presentTime(), runner, null));
+				
 				runner.incStage();
 				double hold_time = (stage2.getDistance())/(runner.getSpeed());
 				runner.hold_time = hold_time;
@@ -52,6 +60,16 @@ public class Run extends Model {
 			}
 			
 			case 4 : {
+				String msg = "Passed second checkpoint!";		
+				if(top_score_SR_2 != null) {
+					msg += " +" + Utils.timeInstantFormatter(TimeOperations.diff(this.presentTime(), top_score_SR_2));
+				}
+				else {
+					top_score_SR_2 = this.presentTime();
+					msg += " "  +Utils.timeInstantFormatter(top_score_SR_2);
+				}	
+				after_SR_2.receive(new TraceNote(this, msg, this.presentTime(), runner, null));
+				
 				runner.incStage();
 				double hold_time = (stage3.getDistance())/(runner.getSpeed());
 				runner.hold_time = hold_time;
@@ -64,6 +82,16 @@ public class Run extends Model {
 			}
 			
 			case 6 : {
+				String msg = "Passed 3th checkpoint!";		
+				if(top_score_SR_3 != null) {
+					msg += " +" + Utils.timeInstantFormatter(TimeOperations.diff(this.presentTime(), top_score_SR_3));
+				}
+				else {
+					top_score_SR_3 = this.presentTime();
+					msg += " "  +Utils.timeInstantFormatter(top_score_SR_3);
+				}	
+				after_SR_3.receive(new TraceNote(this, msg, this.presentTime(), runner, null));
+				
 				runner.incStage();
 				double hold_time = (stage4.getDistance())/(runner.getSpeed());
 				runner.hold_time = hold_time;
@@ -77,6 +105,16 @@ public class Run extends Model {
 			}
 			
 			case 8 : {
+				String msg = "Passed 4th checkpoint!";		
+				if(top_score_SR_4 != null) {
+					msg += " +" + Utils.timeInstantFormatter(TimeOperations.diff(this.presentTime(), top_score_SR_4));
+				}
+				else {
+					top_score_SR_4 = this.presentTime();
+					msg += " "  +Utils.timeInstantFormatter(top_score_SR_4);
+				}	
+				after_SR_4.receive(new TraceNote(this, msg, this.presentTime(), runner, null));
+				
 				runner.incStage();
 				double hold_time = (stage5.getDistance())/(runner.getSpeed());
 				runner.hold_time = hold_time;
@@ -101,8 +139,14 @@ public class Run extends Model {
 				results.receive(new TraceNote(this, msg, this.presentTime(), runner, null));
 				
 				if(ACTIVE_RUNNERS_NUM == 0) {
-					System.out.println("Koniec");
+					System.out.println("Koniec symulacji.");
+										
 					results.close();
+					after_SR_1.close();
+					after_SR_2.close();
+					after_SR_3.close();
+					after_SR_4.close();
+					
 					this.getExperiment().stop();
 				}	
 				
@@ -142,14 +186,40 @@ public class Run extends Model {
 		
 		top_score = null;
 		
+		top_score_SR_1 = null;
+		top_score_SR_2 = null;
+		top_score_SR_3 = null;
+		top_score_SR_4 = null;
+		
 		results = new TraceFileOut(2, "");
 		results.open("output", "Results");
+		
+		after_SR_1 = new TraceFileOut(2, "");
+		after_SR_1.open("output", "After_Shooting_Range_1");
+		
+		after_SR_2 = new TraceFileOut(2, "");
+		after_SR_2.open("output", "After_Shooting_Range_2");
+		
+		after_SR_3 = new TraceFileOut(2, "");
+		after_SR_3.open("output", "After_Shooting_Range_3");
+		
+		after_SR_4 = new TraceFileOut(2, "");
+		after_SR_4.open("output", "After_Shooting_Range_4");
 	}
 
 	// ------------------------------------------------------------------------
 	
 	private TraceFileOut results;
+	private TraceFileOut after_SR_1;
+	private TraceFileOut after_SR_2;
+	private TraceFileOut after_SR_3;
+	private TraceFileOut after_SR_4;
+	
 	private static TimeInstant top_score; 
+	private static TimeInstant top_score_SR_1;
+	private static TimeInstant top_score_SR_2;
+	private static TimeInstant top_score_SR_3;
+	private static TimeInstant top_score_SR_4;
 
 	private final static int RUNNERS_NUM = 30;	
 	public static int ACTIVE_RUNNERS_NUM;
