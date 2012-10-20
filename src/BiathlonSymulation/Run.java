@@ -1,5 +1,7 @@
 package BiathlonSymulation;
 
+import desmoj.core.report.TraceFileOut;
+import desmoj.core.report.TraceNote;
 import desmoj.core.simulator.*;
 
 public class Run extends Model {
@@ -85,10 +87,22 @@ public class Run extends Model {
 				ACTIVE_RUNNERS_NUM--;
 				
 				runner.hold_time = -1.0;
-				System.out.println("Runner " +runner.getNumber()+ " finished![" +this.presentTime().toString()+ "]");
+				
+				String msg = "Finished run!";
+				
+				if(top_score != null) {
+					msg += " +" + Utils.timeInstantFormatter(TimeOperations.diff(this.presentTime(), top_score));
+				}
+				else {
+					top_score = this.presentTime();
+					msg += " "  +Utils.timeInstantFormatter(top_score);
+				}
+				
+				results.receive(new TraceNote(this, msg, this.presentTime(), runner, null));
 				
 				if(ACTIVE_RUNNERS_NUM == 0) {
 					System.out.println("Koniec");
+					results.close();
 					this.getExperiment().stop();
 				}	
 				
@@ -125,12 +139,20 @@ public class Run extends Model {
 
 	@Override
 	public void init() {
+		
+		top_score = null;
+		
+		results = new TraceFileOut(2, "");
+		results.open("output", "Results");
 	}
 
 	// ------------------------------------------------------------------------
+	
+	private TraceFileOut results;
+	private static TimeInstant top_score; 
 
 	private final static int RUNNERS_NUM = 30;	
-	public static int       ACTIVE_RUNNERS_NUM;
+	public static int ACTIVE_RUNNERS_NUM;
 	
 	public Stage stage1;
 	public Stage stage2;
