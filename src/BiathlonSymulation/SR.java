@@ -4,8 +4,23 @@ import desmoj.core.dist.ContDistUniform;
 import desmoj.core.simulator.Model;
 import desmoj.core.simulator.SimProcess;
 
+/**
+ * This class represents a Shooting range in the Run model.
+ * The SR waits until a runner requests his service.
+ * If there is another runner waiting it starts serving this
+ * runner. Otherwise it waits again for the next runner to arrive.
+ */
 public class SR extends SimProcess {
 
+	/**
+	 * Constructor of the Shooting Range process
+	 *
+	 * Used to create a new SR to serve runners.
+	 *
+	 * @param owner the model this process belongs to
+	 * @param name this SR's name
+	 * @param showInTrace flag to indicate if this process shall produce output for the trace
+	 */
 	public SR(Model owner, String name, boolean showInTrace) {
 		super(owner, name, showInTrace);
 		
@@ -18,12 +33,19 @@ public class SR extends SimProcess {
 		SRDist.reset( System.currentTimeMillis());
 	}
 	
+	/**
+	 * Adds runner to this shooting range's queue.
+	 * After that, activates this shooting range life cycle.
+	 * @param runner, runner to serve.
+	 */	
 	public void addRunner(Runner runner) {
 		SRQueue.insert(runner);
 		this.activate();
 	}
 	
-
+	/**
+	 * Describes this Shooting Range's life cycle.
+	 */
 	@Override
 	public void lifeCycle() {
 		while(true) {

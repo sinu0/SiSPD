@@ -4,7 +4,7 @@ import desmoj.core.simulator.TimeInstant;
 import desmoj.core.simulator.TimeSpan;
 
 public class Utils {
-	public static String timeInstantFormatter(TimeSpan time) {
+	public static String timeSpanFormatter(TimeSpan time) {
 		StringBuilder builder = new StringBuilder();
 		
 		Double min = time.getTimeAsDouble();

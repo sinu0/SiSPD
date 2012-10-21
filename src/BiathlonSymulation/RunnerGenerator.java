@@ -4,10 +4,18 @@ import desmoj.core.dist.ContDistUniform;
 import desmoj.core.simulator.Model;
 import desmoj.core.simulator.SimProcess;
 
+/**
+ * This class represents a process source, which generates an amount of runners.
+ */
 public class RunnerGenerator extends SimProcess{
-	
-	private int quantity;
 
+	/**
+	 * RunnerGenerator constructor.
+	 * @param owner the model this truck generator belongs to
+	 * @param name this runners generator's name
+	 * @param showInTrace flag to indicate if this process shall produce output for the trace
+	 * @param quantity describes quantity of runners to generate.
+	 */
 	public RunnerGenerator(Model arg0, String arg1, boolean arg2, int quantity) {
 		super(arg0, arg1, arg2);
 		this.quantity = quantity;
@@ -19,6 +27,9 @@ public class RunnerGenerator extends SimProcess{
 		accuracyDist.reset(System.currentTimeMillis());
 	}
 
+	/**
+	 * describes this process's life cycle: generate an amount of trucks.
+	 */
 	@Override
 	public void lifeCycle() {
 		Run model = (Run)getModel();
@@ -32,4 +43,6 @@ public class RunnerGenerator extends SimProcess{
 	// ------------------------------------------------------------------------
 	private desmoj.core.dist.ContDistUniform speedDist;
 	private desmoj.core.dist.ContDistUniform accuracyDist;
+	
+	private int quantity;
 }

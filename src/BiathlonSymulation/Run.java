@@ -4,8 +4,17 @@ import desmoj.core.report.TraceFileOut;
 import desmoj.core.report.TraceNote;
 import desmoj.core.simulator.*;
 
+/**
+ * This is the model class. It is the main class of a simple process-oriented
+ * model of the biathlon mass start run.
+ */
 public class Run extends Model {
-
+	
+	/**
+	 * Runs the model.
+	 *
+	 * @param args is an array of command-line arguments (will be ignored here)
+	 */
 	public static void main(String[] args) {
 		Run model = new Run(null, "Biathlon simulation", true, true);
 
@@ -18,7 +27,11 @@ public class Run extends Model {
 		exp.finish();
 	}
 	
-	
+	/**
+	 * Queue runner to next stage.
+	 *
+	 * @param runner - current, which has to be queued.
+	 */	
 	public void QueueRunner(Runner runner) {
 				
 		switch(runner.getStage()) {
@@ -39,7 +52,7 @@ public class Run extends Model {
 			case 2 : {
 				String msg = "Passed first checkpoint!";		
 				if(top_score_SR_1 != null) {
-					msg += " +" + Utils.timeInstantFormatter(TimeOperations.diff(this.presentTime(), top_score_SR_1));
+					msg += " +" + Utils.timeSpanFormatter(TimeOperations.diff(this.presentTime(), top_score_SR_1));
 				}
 				else {
 					top_score_SR_1 = this.presentTime();
@@ -62,7 +75,7 @@ public class Run extends Model {
 			case 4 : {
 				String msg = "Passed second checkpoint!";		
 				if(top_score_SR_2 != null) {
-					msg += " +" + Utils.timeInstantFormatter(TimeOperations.diff(this.presentTime(), top_score_SR_2));
+					msg += " +" + Utils.timeSpanFormatter(TimeOperations.diff(this.presentTime(), top_score_SR_2));
 				}
 				else {
 					top_score_SR_2 = this.presentTime();
@@ -84,7 +97,7 @@ public class Run extends Model {
 			case 6 : {
 				String msg = "Passed 3th checkpoint!";		
 				if(top_score_SR_3 != null) {
-					msg += " +" + Utils.timeInstantFormatter(TimeOperations.diff(this.presentTime(), top_score_SR_3));
+					msg += " +" + Utils.timeSpanFormatter(TimeOperations.diff(this.presentTime(), top_score_SR_3));
 				}
 				else {
 					top_score_SR_3 = this.presentTime();
@@ -107,7 +120,7 @@ public class Run extends Model {
 			case 8 : {
 				String msg = "Passed 4th checkpoint!";		
 				if(top_score_SR_4 != null) {
-					msg += " +" + Utils.timeInstantFormatter(TimeOperations.diff(this.presentTime(), top_score_SR_4));
+					msg += " +" + Utils.timeSpanFormatter(TimeOperations.diff(this.presentTime(), top_score_SR_4));
 				}
 				else {
 					top_score_SR_4 = this.presentTime();
@@ -130,7 +143,7 @@ public class Run extends Model {
 				
 				if(top_score != null) {
 					runner.sendMessage(msg+ " place:" + (RUNNERS_NUM-ACTIVE_RUNNERS_NUM) + "/30");
-					msg += " +" + Utils.timeInstantFormatter(TimeOperations.diff(this.presentTime(), top_score));
+					msg += " +" + Utils.timeSpanFormatter(TimeOperations.diff(this.presentTime(), top_score));
 				}
 				else {
 					runner.sendMessage(msg+ " place:" + (RUNNERS_NUM-ACTIVE_RUNNERS_NUM) + "/30");
@@ -156,16 +169,41 @@ public class Run extends Model {
 			}
 		}
 	}
-
+	
+	/**
+	 * Run constructor.
+	 *
+	 * Creates a new Run model via calling
+	 * the constructor of the superclass.
+	 *
+	 * @param owner the model this model is part of (set to <tt>null</tt> when there is no such model)
+	 * @param modelName this model's name
+	 * @param showInReport flag to indicate if this model shall produce output to the report file
+	 * @param showInTrace flag to indicate if this model shall produce output to the trace file
+	 */
 	public Run(Model owner, String modelName, boolean showInReport,	boolean showInTrace) {
 		super(owner, modelName, showInReport, showInTrace);
 	}
 
+	/**
+	 * returns a description of the model to be used in the report.
+	 * @return model description as a string
+	 */
 	@Override
 	public String description() {
 		return "Symulcaja biathlonu z masowego startu";
 	}
-
+	
+	/**
+	 * activates dynamic model components (simulation processes).
+	 *
+	 * This method is used to place all events or processes on the
+	 * internal event list of the simulator which are necessary to start
+	 * the simulation.
+	 *
+	 * In this case, the truck generator and the van carrier(s) have to be
+	 * created and activated.
+	 */
 	@Override
 	public void doInitialSchedules() {
 		stage1 = new Stage(3000);
@@ -183,6 +221,9 @@ public class Run extends Model {
 		runnerGenerator.activate();
 	}
 
+	/**
+	 * initialises static model components like distributions and queues.
+	 */
 	@Override
 	public void init() {
 		
@@ -235,6 +276,5 @@ public class Run extends Model {
 	public SR SR_1;
 	public SR SR_2;
 	public SR SR_3;
-	public SR SR_4;
-	
+	public SR SR_4;	
 }
