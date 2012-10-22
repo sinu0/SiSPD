@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="lib" path="desmoj-2.3.4-demo-bin-gui.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/G:/AGH_IS_FTP/III rok/Symulacja i Sterowanie Procesow Dyskretnych/Desmo-J/javadoc_desmoj/javadoc_desmoj/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/desmoj-2.3.4-demo-bin-gui.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
